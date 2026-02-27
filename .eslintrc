@@ -14,3 +14,10 @@ globals:
 
 extends:
   "htmlacademy/vanilla"
+
+module.exports = {
+  env: {
+    node: true,
+    jest: true,
+  },
+};
