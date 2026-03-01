@@ -16,7 +16,7 @@ const checkLength = (charset, maxLength) => charset.length <= maxLength;
  * isPalindrome('Keks is a cat'); // false
  */
 function isPalindrome(string) {
-  let normalizedString = string.replace(/\s/g, '').toLowerCase();
+  const normalizedString = string.replace(/\s/g, '').toLowerCase();
   return normalizedString === [...normalizedString].reverse().join('');
 }
 
@@ -30,10 +30,10 @@ function isPalindrome(string) {
  * getNumbers('abc123d4'); // 1234
  * getNumbers('no digits'); // NaN
  */
-let getNumbers = (charset) => Math.abs(parseInt(String(charset).replace(/\D+/g, ''), 10));
+const getNumbers = (charset) => Math.abs(parseInt(String(charset).replace(/\D+/g, ''), 10));
 
 module.exports = {
   checkLength,
   isPalindrome,
   getNumbers
-}
+};
