@@ -71,52 +71,75 @@ const MIN_COMMENTS = 0;
 const MAX_COMMENTS = 30;
 const POSTS_COUNT = 25;
 
-// Функция-генератор для получения уникальных идентификаторов из указанного диапазона.
+/**
+ * Возвращает случайное целое число в заданном диапазоне (включительно).
+ * @param {number} min - Минимальное значение
+ * @param {number} max - Максимальное значение
+ * @returns {number} Случайное целое число
+ */
 function getRandomInteger (min, max) {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
-
   return Math.floor(result);
 }
 
-// функция для генерации комментария
+/**
+ * Создаёт генератор уникальных идентификаторов.
+ * При каждом вызове возвращает следующее число.
+ * @returns {function(): number} Функция-генератор id
+ */
+const createIdGenerator = () => {
+  let id = 0;
+  return () => id++;
+};
+
+/**
+ * Генераторы id для комментариев и постов
+ * @type {function(): number}
+ */
+const generateCommentId = createIdGenerator();
+const generatePostId = createIdGenerator();
+
+/**
+ * Создаёт функцию-генератор комментариев.
+ * @returns {function(): Object} Функция, возвращающая объект комментария
+ */
 const createComment = () => {
-  let id = 1;
+  const idAvatar = getRandomInteger(START_NUMBER_AVATAR, FINAL_NUMBER_AVATAR);
+  const indexMessageArr = getRandomInteger(0, MESSAGES.length - 1);
+  const indexNameArr = getRandomInteger(0, NAMES.length - 1);
 
-  return () => {
-    const comment = {};
-
-    const idAvatar = getRandomInteger(START_NUMBER_AVATAR, FINAL_NUMBER_AVATAR);
-    const indexMessageArr = getRandomInteger(0, MESSAGES.length - 1);
-    const indexNameArr = getRandomInteger(0, NAMES.length - 1);
-    comment.id = id;
-    comment.avatar = `img/avatar-${idAvatar}.svg`;
-    comment.message = `${MESSAGES[indexMessageArr]}`;
-    comment.name = `${NAMES[indexNameArr]}`;
-    id++;
-    return comment;
+  return {
+    id: generateCommentId(),
+    avatar: `img/avatar-${idAvatar}.svg`,
+    message: `${MESSAGES[indexMessageArr]}`,
+    name: `${NAMES[indexNameArr]}`,
   };
 };
 
-// функция для создания объекта поста
+/**
+ * Создаёт функцию-генератор постов.
+ * @returns {function(): Object} Функция, возвращающая объект поста
+ */
 const createPost = () => {
-  let id = 1;
+  const postId = generatePostId();
+  const indexDescriptionsArr = getRandomInteger(0, DESCRIPTIONS.length - 1);
+  const numComments = getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
 
-  return () => {
-    const post = {};
-    const indexDescriptionsArr = getRandomInteger(0, DESCRIPTIONS.length - 1);
-    const numComments = getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
-    post.id = id;
-    post.url = `photos/${id}.jpg`;
-    post.description = `${DESCRIPTIONS[indexDescriptionsArr]}`;
-    post.likes = getRandomInteger(MIN_LIKES, MAX_LIKES);
-    post.comments = Array.from({length: numComments}, createComment());
-    id++;
-    return post;
+  return {
+    id: postId,
+    url: `photos/${postId}.jpg`,
+    description: `${DESCRIPTIONS[indexDescriptionsArr]}`,
+    likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+    comments: Array.from({length: numComments}, createComment)
   };
 };
 
-// массив постов
-const postsArray = Array.from({length: POSTS_COUNT}, createPost());
-// console.log(postsArray);
+/**
+ * Массив сгенерированных постов
+ * @type {Object[]}
+ */
+const postsArray = Array.from({length: POSTS_COUNT}, createPost);
+console.log(postsArray);
+
