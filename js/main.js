@@ -1,5 +1,4 @@
 // импорты других модулей, вызовы общих функций, настройка скриптов
-// import './setup.js';
-import {createPosts} from './data';
+import {createPosts} from './data.js';
 
 console.log(createPosts());

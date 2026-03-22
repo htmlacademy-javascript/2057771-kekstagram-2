@@ -1,4 +1,4 @@
-import {getRandomInteger, generateCommentId, generatePostId} from '.util.js';
+import {getRandomInteger, generateCommentId, generatePostId} from './util.js';
 
 const DESCRIPTIONS = [
   'Пляж с высоты птичьего полёта',
