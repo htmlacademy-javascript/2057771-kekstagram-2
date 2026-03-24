@@ -74,8 +74,16 @@ const MAX_COMMENTS = 30;
 const POSTS_COUNT = 25;
 
 /**
+ * @typedef {Object} Comment
+ * @property {number} id
+ * @property {string} avatar
+ * @property {string} message
+ * @property {string} name
+ */
+
+/**
  * Создаёт функцию-генератор комментариев.
- * @returns {function(): Object} Функция, возвращающая объект комментария
+ * @returns {Comment} Функция, возвращающая объект комментария
  */
 const createComment = () => {
   const idAvatar = getRandomInteger(START_NUMBER_AVATAR, FINAL_NUMBER_AVATAR);
@@ -91,8 +99,17 @@ const createComment = () => {
 };
 
 /**
+ * @typedef {Object} Post
+ * @property {number} id
+ * @property {string} url
+ * @property {string} description
+ * @property {number} likes
+ * @property {Comment[]} comments
+ */
+
+/**
  * Создаёт функцию-генератор постов.
- * @returns {function(): Object} Функция, возвращающая объект поста
+ * @returns {Post} Функция, возвращающая объект поста
  */
 const createPost = () => {
   const postId = generatePostId();
