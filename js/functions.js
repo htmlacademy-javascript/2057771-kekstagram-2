@@ -12,6 +12,7 @@ function isMeetingWithinWorkday(startDay, endDay, startMeet, duration) {
   return startMeetMin >= startDayMin && endMeetMin <= endDayMin;
 }
 
+isMeetingWithinWorkday();
 // console.log(isMeetingWithinWorkday('08:00', '17:30', '14:00', 90));
 // console.log(isMeetingWithinWorkday('8:0', '10:0', '8:0', 120));
 // console.log(isMeetingWithinWorkday('08:00', '14:30', '14:00', 90));

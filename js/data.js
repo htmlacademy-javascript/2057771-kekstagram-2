@@ -1,6 +1,4 @@
-import {getRandomInteger, generateCommentId, generatePostId} from './util.js';
-
-const DESCRIPTIONS = [
+export const DESCRIPTIONS = [
   'Пляж с высоты птичьего полёта',
   'Путь к пляжу',
   'Лазурные воды',
@@ -28,7 +26,7 @@ const DESCRIPTIONS = [
   'Экстримальный тур'
 ];
 
-const NAMES = [
+export const NAMES = [
   'Александр',
   'Екатерина',
   'Дмитрий',
@@ -56,7 +54,7 @@ const NAMES = [
   'Matthew'
 ];
 
-const MESSAGES = [
+export const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -64,70 +62,3 @@ const MESSAGES = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?'
 ];
-
-const MIN_LIKES = 15;
-const MAX_LIKES = 200;
-const START_NUMBER_AVATAR = 1;
-const FINAL_NUMBER_AVATAR = 6;
-const MIN_COMMENTS = 0;
-const MAX_COMMENTS = 30;
-const POSTS_COUNT = 25;
-
-/**
- * @typedef {Object} Comment
- * @property {number} id
- * @property {string} avatar
- * @property {string} message
- * @property {string} name
- */
-
-/**
- * Создаёт функцию-генератор комментариев.
- * @returns {Comment} Функция, возвращающая объект комментария
- */
-const createComment = () => {
-  const idAvatar = getRandomInteger(START_NUMBER_AVATAR, FINAL_NUMBER_AVATAR);
-  const indexMessageArr = getRandomInteger(0, MESSAGES.length - 1);
-  const indexNameArr = getRandomInteger(0, NAMES.length - 1);
-
-  return {
-    id: generateCommentId(),
-    avatar: `img/avatar-${idAvatar}.svg`,
-    message: `${MESSAGES[indexMessageArr]}`,
-    name: `${NAMES[indexNameArr]}`,
-  };
-};
-
-/**
- * @typedef {Object} Post
- * @property {number} id
- * @property {string} url
- * @property {string} description
- * @property {number} likes
- * @property {Comment[]} comments
- */
-
-/**
- * Создаёт функцию-генератор постов.
- * @returns {Post} Функция, возвращающая объект поста
- */
-const createPost = () => {
-  const postId = generatePostId();
-  const indexDescriptionsArr = getRandomInteger(0, DESCRIPTIONS.length - 1);
-  const numComments = getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
-
-  return {
-    id: postId,
-    url: `photos/${postId}.jpg`,
-    description: `${DESCRIPTIONS[indexDescriptionsArr]}`,
-    likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
-    comments: Array.from({length: numComments}, createComment)
-  };
-};
-
-/**
- * Массив сгенерированных постов
- * @type {Object[]}
- */
-const createPosts = () => Array.from({length: POSTS_COUNT}, createPost);
-export {createPosts};
