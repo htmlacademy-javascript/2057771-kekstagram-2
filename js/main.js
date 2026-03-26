@@ -1,2 +1,5 @@
 // импорты других модулей, вызовы общих функций, настройка скриптов
-import {createPosts} from './data.js';
+import {createPosts} from './generators.js';
+
+createPosts();
+// console.log(createPosts());
