@@ -28,4 +28,14 @@ const createIdGenerator = () => {
 const generateCommentId = createIdGenerator();
 const generatePostId = createIdGenerator();
 
-export {getRandomInteger, generateCommentId, generatePostId};
+/**
+ * Проверяет, нажата ли клавиша Escape.
+ *
+ * @param {KeyboardEvent} evt - Объект события клавиатуры.
+ * @returns {boolean} Возвращает true, если нажата клавиша Escape, иначе false.
+ */
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+export {getRandomInteger, generateCommentId, generatePostId, isEscapeKey, isEnterKey};
