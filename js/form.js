@@ -244,11 +244,16 @@ noUiSlider.create(sliderElement, {
 
 // обновление значения
 sliderElement.noUiSlider.on('update', () => {
-  effectLevelInput.value = sliderElement.noUiSlider.get();
+  const value = sliderElement.noUiSlider.get();
+  const currentEffect =
+    document.querySelector('.effects__radio:checked').value;
+
+  effectLevelInput.value = value; // запись для формы
+  applyEffect(currentEffect, value);
 });
 
 // применение эффекта
-const applyEffect = (effectName, value) => {
+function applyEffect (effectName, value) {
   const effect = effects[effectName];
 
   if (effectName === 'none') {
@@ -258,7 +263,7 @@ const applyEffect = (effectName, value) => {
 
   previewImage.style.filter =
     `${effect.style}(${value}${effect.unit})`;
-};
+}
 
 // движение слайдера
 sliderElement.noUiSlider.on('update', () => {
@@ -282,6 +287,8 @@ effectsList.addEventListener('change', (evt) => {
   if (effectName === 'none') {
     effectLevelContainer.classList.add('hidden');
     previewImage.style.filter = '';
+    sliderElement.noUiSlider.set(0);
+    effectLevelInput.value = 0; // запись для формы
     return;
   }
 
@@ -297,6 +304,7 @@ effectsList.addEventListener('change', (evt) => {
   });
 
   sliderElement.noUiSlider.set(effect.max);
+  effectLevelInput.value = effect.max; // запись для формы
 });
 
 // сброс эффектов
