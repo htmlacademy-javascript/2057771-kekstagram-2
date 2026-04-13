@@ -72,6 +72,33 @@ const showDataError = () => {
   }, 5000);
 };
 
+// debounce
+function debounce(callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      callback.apply(this, rest);
+    }, timeoutDelay);
+  };
+}
+
+// throttle
+function throttle(callback, delayBetweenFrames) {
+  let lastTime = 0;
+
+  return (...rest) => {
+    const now = Date.now();
+
+    if (now - lastTime >= delayBetweenFrames) {
+      callback.apply(this, rest);
+      lastTime = now;
+    }
+  };
+}
+
 export {
   getRandomInteger,
   generateCommentId,
@@ -79,5 +106,7 @@ export {
   isEscapeKey,
   isEnterKey,
   showErrorMessage,
-  showDataError
+  showDataError,
+  debounce,
+  throttle
 };
