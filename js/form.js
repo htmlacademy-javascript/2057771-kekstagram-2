@@ -192,6 +192,23 @@ function onEscKeydown(evt) {
 }
 
 uploadInput.addEventListener('change', openForm);
+
+// обработчик загрузки фотографии
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
+uploadInput.addEventListener('change', () => {
+  const file = uploadInput.files[0];
+  if (!file) {
+    return;
+  }
+  const fileName = file.name.toLowerCase();
+  const isValid = FILE_TYPES.some((type) => fileName.endsWith(type));
+  if (!isValid) {
+    return;
+  }
+  previewImage.src = URL.createObjectURL(file);
+});
+
 closeButton.addEventListener('click', closeForm);
 
 

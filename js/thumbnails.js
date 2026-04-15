@@ -19,7 +19,14 @@ const createThumbnail = (post) => {
   return thumbnail;
 };
 
+// очистка старых элементов
+const clearThumbnails = () => {
+  container.querySelectorAll('.picture').forEach((el) => el.remove());
+};
+
 const renderThumbnails = (posts) => {
+  clearThumbnails();
+
   const fragment = document.createDocumentFragment();
 
   posts.forEach((post) => {
@@ -29,4 +36,4 @@ const renderThumbnails = (posts) => {
   container.append(fragment);
 };
 
-export { renderThumbnails };
+export { renderThumbnails, clearThumbnails };
