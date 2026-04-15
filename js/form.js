@@ -1,4 +1,4 @@
-import {isEscapeKey} from './utils.js';
+import { isEscapeKey, debounce, throttle } from './utils.js';
 import { sendData } from './api.js';
 import { appendNotification } from './notification-module.js';
 
@@ -192,6 +192,23 @@ function onEscKeydown(evt) {
 }
 
 uploadInput.addEventListener('change', openForm);
+
+// обработчик загрузки фотографии
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
+uploadInput.addEventListener('change', () => {
+  const file = uploadInput.files[0];
+  if (!file) {
+    return;
+  }
+  const fileName = file.name.toLowerCase();
+  const isValid = FILE_TYPES.some((type) => fileName.endsWith(type));
+  if (!isValid) {
+    return;
+  }
+  previewImage.src = URL.createObjectURL(file);
+});
+
 closeButton.addEventListener('click', closeForm);
 
 
@@ -236,13 +253,17 @@ noUiSlider.create(sliderElement, {
 });
 
 // обновление значения
+const throttledApplyEffect = throttle((effectName, value) => {
+  applyEffect(effectName, value);
+}, 100);
+
 sliderElement.noUiSlider.on('update', () => {
   const value = sliderElement.noUiSlider.get();
   const currentEffect =
     document.querySelector('.effects__radio:checked').value;
 
-  effectLevelInput.value = value; // запись для формы
-  applyEffect(currentEffect, value);
+  effectLevelInput.value = value;
+  throttledApplyEffect(currentEffect, value);
 });
 
 // применение эффекта
@@ -258,30 +279,15 @@ function applyEffect (effectName, value) {
     `${effect.style}(${value}${effect.unit})`;
 }
 
-// движение слайдера
-sliderElement.noUiSlider.on('update', () => {
-  const value = sliderElement.noUiSlider.get();
-  const currentEffect =
-    document.querySelector('.effects__radio:checked').value;
-
-  effectLevelInput.value = value;
-  applyEffect(currentEffect, value);
-});
-
 // переключение эффектов
-effectsList.addEventListener('change', (evt) => {
-  if (!evt.target.classList.contains('effects__radio')) {
-    return;
-  }
-
-  const effectName = evt.target.value;
+const debouncedEffectChange = debounce((effectName) => {
   const effect = effects[effectName];
 
   if (effectName === 'none') {
     effectLevelContainer.classList.add('hidden');
     previewImage.style.filter = '';
     sliderElement.noUiSlider.set(0);
-    effectLevelInput.value = 0; // запись для формы
+    effectLevelInput.value = 0;
     return;
   }
 
@@ -297,7 +303,15 @@ effectsList.addEventListener('change', (evt) => {
   });
 
   sliderElement.noUiSlider.set(effect.max);
-  effectLevelInput.value = effect.max; // запись для формы
+  effectLevelInput.value = effect.max;
+}, 200);
+
+effectsList.addEventListener('change', (evt) => {
+  if (!evt.target.classList.contains('effects__radio')) {
+    return;
+  }
+
+  debouncedEffectChange(evt.target.value);
 });
 
 // сброс эффектов
