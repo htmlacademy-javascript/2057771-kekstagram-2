@@ -1,10 +1,10 @@
 import { renderThumbnails } from './thumbnails.js';
 import { debounce } from './utils.js';
 
+const RANDOM_COUNT = 10;
+
 const filtersContainer = document.querySelector('.img-filters');
 const filterButtons = filtersContainer.querySelectorAll('.img-filters__button');
-
-const RANDOM_COUNT = 10;
 
 let posts = [];
 
