@@ -1,16 +1,14 @@
 import {isEscapeKey, isEnterKey} from './utils.js';
 let posts = [];
 
-// элементы DOM
-const userModalElement = document.querySelector('.big-picture');
-const userModalOpenElement = document.querySelector('.pictures');
-const userModalCloseElement = document.querySelector('#picture-cancel');
-
-// комментарии
 const COMMENTS_STEP = 5;
 
 let currentComments = [];
 let shownCommentsCount = 0;
+
+const userModalElement = document.querySelector('.big-picture');
+const userModalOpenElement = document.querySelector('.pictures');
+const userModalCloseElement = document.querySelector('#picture-cancel');
 
 const commentsContainer = userModalElement.querySelector('.social__comments');
 const commentsLoader = userModalElement.querySelector('.comments-loader');
